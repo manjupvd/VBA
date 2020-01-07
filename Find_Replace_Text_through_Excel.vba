@@ -63,3 +63,32 @@ Sub getfilename(num)
     End If
 End Sub
 
+Sub dp_sort_columns()
+'
+' dp_sort_columns Macro
+'
+    Dim mysortrange As String
+    Dim mysort As String
+    Dim numrows As Integer
+    Dim i As Integer
+    
+    numrows = ActiveWorkbook.Worksheets("Sheet1").UsedRange.Rows.Count
+    mysortrange = "C1:C" + Format(numrows)
+    mysort = "A1:C" + Format(numrows)
+    
+    For i = 1 To numrows
+        Sheet1.Cells(i, 3) = Len(Sheet1.Cells(i, 1))
+    Next i
+    
+    ActiveWorkbook.Worksheets("Sheet1").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Sheet1").Sort.SortFields.Add Key:=Range(mysortrange), _
+        SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("Sheet1").Sort
+        .SetRange Range(mysort)
+        .Header = xlGuess
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+End Sub
